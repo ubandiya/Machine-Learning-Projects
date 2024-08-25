@@ -36,3 +36,23 @@ To run these projects locally, you need to have Python installed. You can instal
 
 ```bash
 pip install -r requirements.txt
+
+The `requirements.txt` file includes the necessary Python libraries, such as Scikit-Learn, Pandas, and Matplotlib.
+
+## Usage
+
+Each project is contained within its own directory. You can navigate to the relevant directory and run the Jupyter Notebook (`.ipynb`) file to see the code and outputs. The notebooks are structured to guide you through the process of data loading, preprocessing, model training, and evaluation.
+
+For example, to run the Iris classification project:
+
+```bash
+cd Iris
+jupyter notebook Iris_Classification.ipynb
+
+## Contributing
+
+Contributions are welcome! If you have ideas for improving these projects or adding new ones, feel free to fork this repository, make your changes, and submit a pull request.
+
+## License
+
+This repository is licensed under the MIT License. You are free to use, modify, and distribute the code as per the terms of the license.
