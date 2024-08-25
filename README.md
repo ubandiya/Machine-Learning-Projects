@@ -56,3 +56,6 @@ Contributions are welcome! If you have ideas for improving these projects or add
 ## License
 
 This repository is licensed under the MIT License. You are free to use, modify, and distribute the code as per the terms of the license.
+
+## NOTE
+This project is still ongoing and some of the algorithms are yet to be implemented, help and contributions are welcome to help me speed up my learning process.
