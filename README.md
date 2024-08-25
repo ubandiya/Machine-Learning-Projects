@@ -36,7 +36,7 @@ To run these projects locally, you need to have Python installed. You can instal
 
 ```bash
 pip install -r requirements.txt
-
+```
 The `requirements.txt` file includes the necessary Python libraries, such as Scikit-Learn, Pandas, and Matplotlib.
 
 ## Usage
@@ -48,7 +48,7 @@ For example, to run the Iris classification project:
 ```bash
 cd Iris
 jupyter notebook Iris_Classification.ipynb
-
+```
 ## Contributing
 
 Contributions are welcome! If you have ideas for improving these projects or adding new ones, feel free to fork this repository, make your changes, and submit a pull request.
