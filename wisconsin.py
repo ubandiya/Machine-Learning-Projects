@@ -11,7 +11,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.feature_selection import SelectKBest, f_classif
 
 data = load_breast_cancer()
-df = pd.DataFrame(data.data, columns=data.feature_names)
+df = pd.DataFrame(data=data.data, columns=data.feature_names)
 df['target'] = data.target
 
 '''plt.figure(figsize=(20, 10))
