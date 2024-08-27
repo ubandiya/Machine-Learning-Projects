@@ -1,6 +1,8 @@
 # AUTHOR: UBANDIYA Najib Yusuf
 
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.preprocessing import StandardScaler, OneHotEncoder 
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import RidgeClassifier, LogisticRegression
@@ -29,6 +31,22 @@ if not df1.empty and not df2.empty:
 else:
     print("One or both of the DataFrames are empty. Please check the CSV files.")
 
+# EDA
+print(churn_df.head())
+print()
+
+print(churn_df.describe(include='all'))
+print()
+
+missing_values = churn_df.isnull().sum()
+print(missing_values)
+print()
+
+churn_distribution = churn_df['churn'].value_counts(normalize=True)
+print(churn_distribution)
+print()
+
+# Encoding categorical features
 encoder = OneHotEncoder(sparse=False, drop='first')
 categorical_vars = churn_df.select_dtypes(include=['object', 'category']).columns.tolist()
 encoded_features = encoder.fit_transform(churn_df[categorical_vars])
@@ -38,6 +56,7 @@ encoded_df = pd.DataFrame(encoded_features, columns=encoded_feature_names, index
 
 churn_df_encoded = churn_df.drop(columns=categorical_vars).join(encoded_df)
 
+# Data preprocessing
 X = churn_df_encoded.drop(columns=['churn'])
 y = churn_df_encoded['churn']
 
@@ -48,6 +67,7 @@ features_scaled = pd.DataFrame(X_scaled, columns=X.columns, index=churn_df.index
 
 X_train, X_test, y_train, y_test = train_test_split(features_scaled, y, test_size=0.2, random_state=42)
 
+# Models
 logreg = LogisticRegression()
 logreg.fit(X_train, y_train)
 logreg_pred = logreg.predict(X_test)
