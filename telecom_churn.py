@@ -94,3 +94,36 @@ rf_accuracy = rf_cm.trace() / rf_cm.sum()
 
 higher_accuracy = "LogisticRegression" if logreg_accuracy > rf_accuracy else "RandomForest"
 print(higher_accuracy)
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Logistic Regression Confusion Matrix
+sns.heatmap(logreg_cm, annot=True, fmt='d', cmap='Blues', ax=axes[0])
+axes[0].set_title('Logistic Regression Confusion Matrix')
+axes[0].set_xlabel('Predicted')
+axes[0].set_ylabel('Actual')
+
+# Random Forest Confusion Matrix
+sns.heatmap(rf_cm, annot=True, fmt='d', cmap='Blues', ax=axes[1])
+axes[1].set_title('Random Forest Confusion Matrix')
+axes[1].set_xlabel('Predicted')
+axes[1].set_ylabel('Actual')
+
+plt.tight_layout()
+plt.show()
+
+# Plot classification reports
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+# Logistic Regression Classification Report
+logreg_cr_dict = classification_report(y_test, logreg_pred, output_dict=True)
+sns.heatmap(pd.DataFrame(logreg_cr_dict).iloc[:-1, :].T, annot=True, cmap='Blues', ax=axes[0])
+axes[0].set_title('Logistic Regression Classification Report')
+
+# Random Forest Classification Report
+rf_cr_dict = classification_report(y_test, rf_pred, output_dict=True)
+sns.heatmap(pd.DataFrame(rf_cr_dict).iloc[:-1, :].T, annot=True, cmap='Blues', ax=axes[1])
+axes[1].set_title('Random Forest Classification Report')
+
+plt.tight_layout()
+plt.show()
