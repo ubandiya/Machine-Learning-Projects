@@ -25,7 +25,9 @@ Ensure you have the following Python packages installed:
 
 You can install these packages using pip:
 
-   ``` pip install numpy pandas scikit-learn imbalanced-learn matplotlib seaborn scipy ```
+   ``` bash
+   pip install numpy pandas scikit-learn imbalanced-learn matplotlib seaborn scipy
+```
 
 ### Running the Project
 
@@ -46,7 +48,9 @@ You can install these packages using pip:
 
    To run the script, use:
 
-   ``` python diabetes.py ```
+   ``` bash
+    python diabetes.py
+   ```
 
 ## Usage
 
