@@ -1,6 +1,6 @@
 # Machine Learning Projects
 
-This repository contains several machine learning projects based on well-known datasets such as the Iris, Breast Cancer, and Customer Churn datasets. These projects are designed to explore various machine learning techniques using Python and popular libraries like Scikit-Learn. Each project focuses on different aspects of machine learning, including classification, data preprocessing, model evaluation, and more.
+This repository contains several machine learning projects based on well-known datasets such as the Iris, Breast Cancer, Customer Churn, Diabetes, and Telecommunications Churn datasets. These projects are designed to explore various machine learning techniques using Python and popular libraries like Scikit-Learn. Each project focuses on different aspects of machine learning, including classification, data preprocessing, model evaluation, and more.
 
 ## Datasets
 
@@ -30,14 +30,30 @@ The Customer Churn dataset is focused on predicting whether a customer will leav
 - Implement techniques such as SMOTE (Synthetic Minority Over-sampling Technique) to handle class imbalance.
 - Evaluate model performance using AUC-ROC curve, precision-recall curve, and other relevant metrics.
 
+### 4. Diabetes Dataset
+The Diabetes dataset is used for predicting the onset of diabetes based on various medical diagnostic measurements. This dataset includes features such as glucose levels, blood pressure, skin thickness, insulin, and BMI.
+
+**Project Idea:**
+- Preprocess the data by handling missing values, scaling features, and splitting the dataset.
+- Develop classification models such as K-Nearest Neighbours (KNN), Random Forest, Logistic Regression, and Decision Trees to predict diabetes.
+- Evaluate the models using performance metrics and determine the best model based on accuracy and other relevant metrics.
+
+### 5. Telecommunications Churn Dataset
+The Telecommunications Churn dataset contains data from telecom customers and focuses on predicting whether a customer will churn (leave) based on their usage patterns and demographics. This dataset includes two parts: `telecom_demographics` and `telecom_usage`.
+
+**Project Idea:**
+- Perform data cleaning and preprocessing on both datasets.
+- Integrate the datasets to form a comprehensive view of each customer.
+- Apply machine learning models to predict customer churn and evaluate model performance.
+- Use techniques such as SMOTE for handling class imbalance and improve model accuracy.
+
 ## Installation
 
 To run these projects locally, you need to have Python installed. You can install the required dependencies using `pip`:
 
-```bash
-pip install -r requirements.txt
+  ``` bash
+  pip install numpy pandas scikit-learn imbalanced-learn matplotlib seaborn scipy
 ```
-The `requirements.txt` file includes the necessary Python libraries, such as Scikit-Learn, Pandas, and Matplotlib.
 
 ## Usage
 
@@ -45,10 +61,11 @@ Each project is contained within its own directory. You can navigate to the rele
 
 For example, to run the Iris classification project:
 
-```bash
-cd Iris
-jupyter notebook Iris_Classification.ipynb
+  ``` bash
+    cd Iris
+    jupyter notebook Iris_Classification.ipynb
 ```
+
 ## Contributing
 
 Contributions are welcome! If you have ideas for improving these projects or adding new ones, feel free to fork this repository, make your changes, and submit a pull request.
@@ -58,4 +75,5 @@ Contributions are welcome! If you have ideas for improving these projects or add
 This repository is licensed under the MIT License. You are free to use, modify, and distribute the code as per the terms of the license.
 
 ## NOTE
+
 This project is still ongoing and some of the algorithms are yet to be implemented, help and contributions are welcome to help me speed up my learning process.
