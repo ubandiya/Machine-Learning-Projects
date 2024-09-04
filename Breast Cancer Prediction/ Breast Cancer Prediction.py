@@ -18,7 +18,7 @@ data = load_breast_cancer()
 df = pd.DataFrame(data=data.data, columns=data.feature_names)
 df['target'] = data.target
 
-'''print(df.head())
+print(df.head())
 print()
 
 print(df.info())
@@ -31,7 +31,7 @@ plt.figure(figsize=(20, 10))
 sns.boxplot(data=df.drop('target', axis=1))
 plt.xticks(rotation=90)
 plt.title('Box Plot of Features')
-plt.show()'''
+plt.show()
 
 z_scores = stats.zscore(df.drop('target', axis=1))
 abs_z_scores = np.abs(z_scores)
@@ -51,7 +51,7 @@ X = df[['mean radius', 'mean perimeter', 'mean area', 'mean concavity',
        'worst concavity', 'worst concave points']]
 y = df['target'].map({0: 'No cancer', 1: 'Cancer'})
 
-'''df_visual = X.copy()
+df_visual = X.copy()
 df_visual['target'] = y
 
 sns.pairplot(df_visual, hue='target', diag_kind='kde')
@@ -69,7 +69,7 @@ plt.figure(figsize=(10, 8))
 correlation_matrix = X.corr()
 sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Correlation Heatmap of Selected Features')
-plt.show()'''
+plt.show()
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -121,12 +121,12 @@ rf_grid_search = GridSearchCV(rf_pipeline, param_grid_rf, cv=5)
 knn_grid_search.fit(X, y)
 rf_grid_search.fit(X, y)
 
-'''print(f'Best KNN Parameters: {knn_grid_search.best_params_}\n'
+print(f'Best KNN Parameters: {knn_grid_search.best_params_}\n'
       f'Best Score: {knn_grid_search.best_score_}')
 print()
 print(f'Best RF Parameters: {rf_grid_search.best_params_}\n'
       f'Best Score: {rf_grid_search.best_score_}')
-print()'''
+print()
 
 feature_importances = rf_pipeline.named_steps['rf'].feature_importances_
 features_ = X.columns
@@ -135,7 +135,7 @@ importance_df = pd.DataFrame({
     'Importances': feature_importances
 })
 importance_df = importance_df.sort_values(by='Importances', ascending=False)
-#print(importance_df)
+print(importance_df)
 
 # Re-fit with best parameters for KNN and Random Forest
 best_knn = knn_pipeline.set_params(**knn_grid_search.best_params_)
@@ -176,8 +176,3 @@ cm_rf = confusion_matrix(y_test, y_pred_rf, labels=['No cancer', 'Cancer'])
 # Plot confusion matrices
 plot_confusion_matrix(cm_knn, 'KNN Confusion Matrix')
 plot_confusion_matrix(cm_rf, 'Random Forest Confusion Matrix')
-
-synth_data = np.random.normal(loc=np.mean(X_test, axis=0), scale=np.std(X_test, axis=0), size=(30, X_test.shape[1]))
-synth_scaled = scaler.transform(synth_data)
-synth_pred = knn.predict(synth_scaled)
-print(f'Accuracy of synthetic data prediction: {accuracy_score(y_test, synth_pred)}')
