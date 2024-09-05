@@ -3,59 +3,70 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.datasets import load_iris
+from sklearn.pipeline import Pipeline
 
 iris = load_iris()
 df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
 df['species'] = iris.target
 df['species'] = df['species'].map({0: 'setosa', 1: 'versicolor', 2: 'virginicia'})
 
-# Data preparation
-X = df.drop(columns=['species'])
+print(df.head())
+print()
+
+print(df.info())
+print()
+
+print(df.describe())
+print()
+
+print(df.drop(columns='species', axis=1).skew())
+print()
+
+plt.figure(figsize=(20, 10))
+sns.pairplot(df, hue='species', diag_kind='hist', height=2.5)
+plt.show()
+
+plt.figure(figsize=(20, 10))
+sns.scatterplot(x='sepal length (cm)', y='sepal width (cm)', data=df)
+plt.title('sepal width (cm) vs sepal length (cm)')
+plt.show()
+
+plt.figure(figsize=(15, 10))
+sns.heatmap(df.drop(columns='species').corr(), annot=True, cmap='coolwarm')
+plt.show()
+
+X = df.drop(columns='species', axis=1)
 y = df['species']
 
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
-#print(pd.DataFrame(X_scaled, columns=X.columns).head())
+print(X.shape)
+print(y.shape)
 
-# Train-Test-Split (80% training sets, 20% test sets)
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 print(f'Training set shape: {X_train.shape}')
 print(f'Testing set shape: {X_test.shape}')
+
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('knn', KNeighborsClassifier(n_neighbors=3))
+])
+
+pipeline.fit(X_train, y_train)
+
+y_pred_knn = pipeline.predict(X_test)
+print(f'{'='*5} Performance {'='*5}')
+print(f'Accuracy: {accuracy_score(y_test, y_pred)}')
+print(classification_report(y_test, y_pred))
+print(f'Confusion Matrix:\n {confusion_matrix(y_test, y_pred)}\n')
+cv_scores = cross_val_score(pipeline, X, y, cv=5)
+print(f'Cross-Validation Scores: {cv_scores}')
 print()
 
-# Model selection (k-Nearest Neighbor)
-knn = KNeighborsClassifier(n_neighbors=3)
 
-# Train the model
-knn.fit(X_train, y_train)
-
-# Model evaluation
-y_pred = knn.predict(X_test)
-
-accuracy = accuracy_score(y_test, y_pred)
-print(f'Accuracy: {accuracy}')
-print(f'Classification report:\n{classification_report(y_test, y_pred)}')
-print(f'Confusion matrix:\n {confusion_matrix(y_test, y_pred)}')
-print()
-
-# Make prediction
-sample_flower = pd.DataFrame({
-    'sepal length (cm)': [5.0],
-    'sepal width (cm)': [3.5],
-    'petal length (cm)': [2.2],
-    'petal width (cm)': [0.2]
-})
-sample_flower_scaled = scaler.transform(sample_flower)
-predicted_species = knn.predict(sample_flower_scaled)
-print(f'Predicted species: {predicted_species}')
-print()
-
-# Cross-validation for different values of k
 k_values = list(range(1, 31))
 cv_scores = []
 
@@ -67,9 +78,40 @@ for k in k_values:
 best_k = k_values[cv_scores.index(max(cv_scores))]
 print(f'Best k value: {best_k}')
 
-#sns.scatterplot(x=k_values, y=cv_scores)
-sns.scatterplot(x=k_values, y=cv_scores, hue=cv_scores)
-plt.xlabel('k')
-plt.ylabel('Cross-Validation Accuracy')
-plt.title('KNN Cross-Validation Accuracy vs k')
+sample_flower = pd.DataFrame({
+    'sepal length (cm)': [5.0],
+    'sepal width (cm)': [3.5],
+    'petal length (cm)': [2.2],
+    'petal width (cm)': [0.2]
+})
+predicted_species = pipeline.predict(sample_flower)
+print(f'Predicted species: {predicted_species}')
+print()
+
+param_grid = {
+    'knn__n_neighbors': [3, 5, 7],
+    'knn__weights': ['uniform', 'distance']
+}
+
+grid_search = GridSearchCV(pipeline, param_grid, cv=5)
+grid_search.fit(X, y)
+
+print(f'Best Parameters: {grid_search.best_params_}\n'
+      f'Best Score: {grid_search.best_score_}')
+
+best_knn = pipeline.set_params(**grid_search.best_params_)
+best_knn.fit(X_train, y_train)
+
+y_pred_final = best_knn.predict(X_test)
+
+print(f'{"="*5} Final Performance {"="*5}')
+print(f'Accuracy: {accuracy_score(y_test, y_pred_final)}')
+print(classification_report(y_test, y_pred_final))
+print(f'Confusion Matrix:\n {confusion_matrix(y_test, y_pred_final)}')
+
+plt.figure(figsize=(15, 10))
+sns.heatmap(confusion_matrix(y_test, y_pred_final), annot=True, cmap='Blues')
+plt.title('Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
 plt.show()
